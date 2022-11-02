@@ -16,9 +16,14 @@ service / on new http:Listener(9090) {
                 token: "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"
             }
         });
-       stream<github:Repository,github:Error?> response = check githubEp -> getRepositories();
-       return "nice";
-       
+        stream<github:Repository, github:Error?> response = check githubEp->getRepositories();
+        (string[]|error)? reposnames = check from var i in response
+            select i.name;
+        string repositoryName = "";
+        if (reposnames is string[]) {
+            repositoryName = reposnames[0];
+        }
+        return repositoryName;
+
     }
 }
-
