@@ -17,8 +17,7 @@ service / on new http:Listener(9090) {
             }
         });
         stream<github:Repository, github:Error?> response = check githubEp->getRepositories();
-        (string[]|error)? reposnames = check from var i in response
-            select i.name;
+        (string[]|error)? reposnames = check from var i in response select i.name;
         string repositoryName = "";
         if (reposnames is string[]) {
             repositoryName = reposnames[0];
